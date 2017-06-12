@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -38,6 +38,12 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Components">
+      <HintPath>..\Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces">
+      <HintPath>..\Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -53,8 +59,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DummyTest.cs" />
+    <Compile Include="ForeignAssemblyTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Backbend.csproj">
+      <Project>{cef48e59-9c76-4b4a-b6fb-974d9dad3c02}</Project>
+      <Name>Backbend</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
