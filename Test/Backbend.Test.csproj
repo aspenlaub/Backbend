@@ -41,6 +41,10 @@
     <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Components">
       <HintPath>..\Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Components.dll</HintPath>
     </Reference>
+    <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces">
       <HintPath>..\Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces.dll</HintPath>
     </Reference>
@@ -54,11 +58,15 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ArchiveFolderFinderSecretTest.cs" />
+    <Compile Include="BackbendFoldersTest.cs" />
     <Compile Include="ForeignAssemblyTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -66,6 +74,10 @@
     <ProjectReference Include="..\Backbend.csproj">
       <Project>{cef48e59-9c76-4b4a-b6fb-974d9dad3c02}</Project>
       <Name>Backbend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Backbend.Core.csproj">
+      <Project>{872bf67b-ba6e-472c-ba2c-6f47a0ab5894}</Project>
+      <Name>Backbend.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
