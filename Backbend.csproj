@@ -39,6 +39,14 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Components, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Include\Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -101,6 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="filing.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Core\Backbend.Core.csproj">
+      <Project>{872BF67B-BA6E-472C-BA2C-6F47A0AB5894}</Project>
+      <Name>Backbend.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
