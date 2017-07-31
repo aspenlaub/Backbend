@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 
@@ -17,7 +18,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
         }
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e) {
-            Close();
+            Environment.Exit(0);
         }
 
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e) {
@@ -31,6 +32,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
 
         private void Window_Loaded(object sender, RoutedEventArgs e) {
             Refresh();
+        }
+
+        private void Window_Closed(object sender, EventArgs e) {
+            Environment.Exit(0);
         }
     }
 }
