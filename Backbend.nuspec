@@ -13,7 +13,9 @@
     <copyright>Copyright 2018</copyright>
     <version>$version$</version>
     <dependencies>
+      <dependency id="Aspenlaub.Net.GitHub.CSharp.Pegh" version="1.0.6578.13363" />
       <dependency id="DotNetZip" version="1.10.1" />
+      <dependency id="System.Management.Automation_PowerShell_3.0" version="6.3.9600.17400" />
     </dependencies>
   </metadata>
   <files>
