@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Aspenlaub.Net.GitHub.CSharp.Backbend</id>
+    <title>Aspenlaub.Net.GitHub.CSharp.Backbend</title>
+    <description>Aspenlaub.Net.GitHub.CSharp.Backbend</description>
+    <releaseNotes>Aspenlaub.Net.GitHub.CSharp.Backbend</releaseNotes>
+    <authors>Wolfgang Berger (aspenlaub.net)</authors>
+    <owners>Wolfgang Berger (aspenlaub.net)</owners>
+    <projectUrl>https://github.com/aspenlaub/Backbend</projectUrl>
+    <iconUrl>https://www.aspenlaub.net/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2018</copyright>
+    <version>$version$</version>
+    <dependencies>
+      <dependency id="Aspenlaub.Net.GitHub.CSharp.Pegh" version="1.0.6661.19472" />
+      <dependency id="Castle.Core" version="4.2.1" />
+      <dependency id="DotNetZip" version="1.10.1" />
+      <dependency id="Moq" version="4.8.2" />
+      <dependency id="System.Management.Automation_PowerShell_3.0" version="6.3.9600.17400" />
+      <dependency id="System.Threading.Tasks.Extensions" version="4.4.0" />
+      <dependency id="System.ValueTuple" version="4.4.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\BackbendBin\Release\Aspenlaub.*.dll" exclude="..\..\BackbendBin\Release\*.Test*.*" target="lib\net46" />
+    <file src="..\..\BackbendBin\Release\Aspenlaub.*.pdb" exclude="..\..\BackbendBin\Release\*.Test*.*" target="lib\net46" />
+  </files>
+</package>
