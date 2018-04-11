@@ -2,6 +2,7 @@
 using System.Linq;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
@@ -27,7 +28,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
             var componentProvider = new ComponentProvider();
             var secretRepository = componentProvider.SecretRepository;
             var backbendFoldersSecret = new BackbendFoldersSecret();
-            var backbendFolders = secretRepository.Get(backbendFoldersSecret);
+            var errorsAndInfos = new ErrorsAndInfos();
+            var backbendFolders = secretRepository.Get(backbendFoldersSecret, errorsAndInfos);
+            Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.IsNotNull(backbendFolders);
             Assert.IsTrue(backbendFolders.Count >= 4);
             var clone = backbendFolders.Clone();

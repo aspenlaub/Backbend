@@ -15,10 +15,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             SecretRepository = ComponentProvider.SecretRepository;
         }
 
-        public IEnumerable<string> Analyse() {
+        public IEnumerable<string> Analyse(IErrorsAndInfos errorsAndInfos) {
             var result = new List<string>();
-            var backbendFolders = SecretRepository.Get(new BackbendFoldersSecret());
-            var archiveFolderFinder = SecretRepository.Get(new ArchiveFolderFinderSecret());
+            var backbendFolders = SecretRepository.Get(new BackbendFoldersSecret(), errorsAndInfos);
+            var archiveFolderFinder = SecretRepository.Get(new ArchiveFolderFinderSecret(), errorsAndInfos);
             foreach (var backbendFolder in backbendFolders.FoldersOnThisMachine()) {
                 AnalyseFolder(backbendFolder.Name, archiveFolderFinder, result);
                 foreach (var subFolder in Directory.GetDirectories(backbendFolder.Name)) {

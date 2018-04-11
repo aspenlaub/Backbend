@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
     /// <summary>
@@ -26,7 +28,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
         }
 
         private void Refresh() {
-            var results = BackbendFoldersAnalyser.Analyse();
+            var errorsAndInfos = new ErrorsAndInfos();
+            var results = BackbendFoldersAnalyser.Analyse(errorsAndInfos).ToList();
+            results.InsertRange(0, errorsAndInfos.Errors);
+
             AnalysisResults.Text = string.Join("\r\n", results);
         }
 
