@@ -33,7 +33,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             var archiveFolder = SecretRepository.ExecutePowershellFunction(archiveFolderFinder, folder);
             if (archiveFolder == "" || archiveFolder == folder) { return; }
 
+            if (!Directory.Exists(archiveFolder)) {
+                result.Add(string.Format(Properties.Resources.FolderInNeedOfArchiving, folder));
+                return;
+            }
+
             var latestModificationTime = LatestModificationTime(folder, "*.*", SearchOption.AllDirectories);
+            if (latestModificationTime < new DateTime(2000, 1, 1)) {
+                result.Add(string.Format(Properties.Resources.FolderInNeedOfArchiving, folder));
+                return;
+            }
+
             var minimumArchivingTime = latestModificationTime.AddDays(-ArchiveWithinHowManyDays);
             var newestArchivingTime = LatestModificationTime(archiveFolder, "*.*zip", SearchOption.TopDirectoryOnly);
             if (newestArchivingTime > minimumArchivingTime) { return; }
