@@ -33,6 +33,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             var archiveFolder = SecretRepository.ExecutePowershellFunction(archiveFolderFinder, folder);
             if (archiveFolder == "" || archiveFolder == folder) { return; }
 
+            if (archiveFolder == null) {
+                throw new Exception("Error in archive folder finder");
+            }
+
             if (!Directory.Exists(archiveFolder)) {
                 result.Add(string.Format(Properties.Resources.FolderInNeedOfArchiving, folder));
                 return;
