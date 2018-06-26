@@ -38,13 +38,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             }
 
             if (!Directory.Exists(archiveFolder)) {
-                result.Add(string.Format(Properties.Resources.FolderInNeedOfArchiving, folder));
+                result.Add(string.Format(Properties.Resources.FolderInNeedOfArchivingNoArchiveFolder, folder));
                 return;
             }
 
             var latestModificationTime = LatestModificationTime(folder, "*.*", SearchOption.AllDirectories);
             if (latestModificationTime < new DateTime(2000, 1, 1)) {
-                result.Add(string.Format(Properties.Resources.FolderInNeedOfArchiving, folder));
+                result.Add(string.Format(Properties.Resources.FolderInNeedOfArchivingNoFiles, folder));
                 return;
             }
 

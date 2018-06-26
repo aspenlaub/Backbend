@@ -68,5 +68,23 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core.Properties {
                 return ResourceManager.GetString("FolderInNeedOfArchiving", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder {0} needs to be archived (archive folder does not exist).
+        /// </summary>
+        internal static string FolderInNeedOfArchivingNoArchiveFolder {
+            get {
+                return ResourceManager.GetString("FolderInNeedOfArchivingNoArchiveFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder {0} needs to be archived (does not contain any files).
+        /// </summary>
+        internal static string FolderInNeedOfArchivingNoFiles {
+            get {
+                return ResourceManager.GetString("FolderInNeedOfArchivingNoFiles", resourceCulture);
+            }
+        }
     }
 }
