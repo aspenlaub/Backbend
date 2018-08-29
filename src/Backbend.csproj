@@ -16,33 +16,28 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ApplicationIcon>filing.ico</ApplicationIcon>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <GenerateBuildInfoConfigFile>false</GenerateBuildInfoConfigFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\BackbendBin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>..\temp\obj\Debug\</IntermediateOutputPath>
-    <GenerateBuildInfoConfigFile>false</GenerateBuildInfoConfigFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\BackbendBin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>..\temp\obj\Release\</IntermediateOutputPath>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <RunOctoPack>false</RunOctoPack>
-    <GenerateBuildInfoConfigFile>false</GenerateBuildInfoConfigFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspenlaub.Net.GitHub.CSharp.Pegh, Version=1.0.6750.33219, Culture=neutral, processorArchitecture=MSIL">
