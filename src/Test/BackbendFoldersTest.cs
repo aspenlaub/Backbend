@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
@@ -24,12 +25,12 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
         }
 
         [TestMethod]
-        public void CanGetBackbendFolders() {
+        public async Task CanGetBackbendFolders() {
             var componentProvider = new ComponentProvider();
             var secretRepository = componentProvider.SecretRepository;
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var errorsAndInfos = new ErrorsAndInfos();
-            var backbendFolders = secretRepository.Get(backbendFoldersSecret, errorsAndInfos);
+            var backbendFolders = await secretRepository.GetAsync(backbendFoldersSecret, errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.IsNotNull(backbendFolders);
             Assert.IsTrue(backbendFolders.Count >= 4);

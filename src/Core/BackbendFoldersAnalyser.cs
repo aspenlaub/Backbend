@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
@@ -15,24 +17,27 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             SecretRepository = ComponentProvider.SecretRepository;
         }
 
-        public IEnumerable<string> Analyse(IErrorsAndInfos errorsAndInfos) {
+        public async Task<IEnumerable<string>> AnalyseAsync(IErrorsAndInfos errorsAndInfos) {
             var result = new List<string>();
-            var backbendFolders = SecretRepository.Get(new BackbendFoldersSecret(), errorsAndInfos);
-            var archiveFolderFinder = SecretRepository.Get(new ArchiveFolderFinderSecret(), errorsAndInfos);
+            var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
+            if (errorsAndInfos.AnyErrors()) { return result; }
+            var archiveFolderFinder = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
+            if (errorsAndInfos.AnyErrors()) { return result; }
+
             foreach (var backbendFolder in backbendFolders.FoldersOnThisMachine()) {
-                AnalyseFolder(backbendFolder.Name, archiveFolderFinder, result);
+                await AnalyseFolderAsync(backbendFolder.Name, archiveFolderFinder, result);
                 foreach (var subFolder in Directory.GetDirectories(backbendFolder.Name)) {
-                    AnalyseFolder(subFolder, archiveFolderFinder, result);
+                    await AnalyseFolderAsync(subFolder, archiveFolderFinder, result);
                 }
             }
 
             return result;
         }
 
-        private void AnalyseFolder(string folder, IPowershellFunction<string, string> archiveFolderFinder, ICollection<string> result) {
+        private async Task AnalyseFolderAsync(string folder, CsScript archiveFolderFinder, ICollection<string> result) {
             if (!Directory.Exists(folder)) { return; }
 
-            var archiveFolder = SecretRepository.ExecutePowershellFunction(archiveFolderFinder, folder);
+            var archiveFolder = await SecretRepository.ExecuteCsScriptAsync(archiveFolderFinder, new List<ICsScriptArgument> { new CsScriptArgument { Name = "folder", Value = folder } });
             if (archiveFolder == "" || archiveFolder == folder) { return; }
 
             if (archiveFolder == null) {

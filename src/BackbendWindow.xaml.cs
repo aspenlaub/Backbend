@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
@@ -23,20 +24,21 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
             Environment.Exit(0);
         }
 
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e) {
-            Refresh();
+        private async void RefreshButton_OnClick(object sender, RoutedEventArgs e) {
+            await RefreshAsync();
         }
 
-        private void Refresh() {
+        private async Task RefreshAsync() {
             var errorsAndInfos = new ErrorsAndInfos();
-            var results = BackbendFoldersAnalyser.Analyse(errorsAndInfos).ToList();
-            results.InsertRange(0, errorsAndInfos.Errors);
+            var results = await BackbendFoldersAnalyser.AnalyseAsync(errorsAndInfos);
+            var resultsList = results.ToList();
+            resultsList.InsertRange(0, errorsAndInfos.Errors);
 
-            AnalysisResults.Text = string.Join("\r\n", results);
+            AnalysisResults.Text = string.Join("\r\n", resultsList);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e) {
-            Refresh();
+        private async void Window_Loaded(object sender, RoutedEventArgs e) {
+            await RefreshAsync();
         }
 
         private void Window_Closed(object sender, EventArgs e) {
