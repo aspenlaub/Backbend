@@ -1,8 +1,8 @@
-﻿namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
+﻿namespace Aspenlaub.Net.GitHub.CSharp.Backbend.GUI {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public class App {
+    public partial class App {
         public static string SourceFileFullName() {
             return SourceFileFullNameOfCaller();
         }

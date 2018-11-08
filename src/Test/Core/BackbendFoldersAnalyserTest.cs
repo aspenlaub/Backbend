@@ -9,7 +9,7 @@ using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class BackbendFoldersAnalyserTest {
         [TestMethod]

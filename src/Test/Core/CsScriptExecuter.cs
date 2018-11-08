@@ -9,7 +9,7 @@ using Dotnet.Script.Core;
 using Dotnet.Script.DependencyModel.Logging;
 using Dotnet.Script.DependencyModel.Runtime;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     public class CsScriptExecuter : ICsScriptExecuter {
         public async Task<string> ExecuteCsScriptAsync(ICsScript csScript, IList<ICsScriptArgument> presetArguments, ICsScriptArgumentPrompter prompter) {
             if (csScript.Script.Length == 0 || !csScript.Script.TrimEnd().EndsWith("#exit")) {

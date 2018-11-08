@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Properties {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.GUI.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Aspenlaub.Net.GitHub.CSharp.Backbend.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Aspenlaub.Net.GitHub.CSharp.Backbend.GUI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

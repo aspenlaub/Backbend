@@ -61,29 +61,29 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Folder {0} needs to be archived.
+        ///   Looks up a localized string similar to Folder/-s need/-s to be archived.
         /// </summary>
-        internal static string FolderInNeedOfArchiving {
+        internal static string FoldersInNeedOfArchiving {
             get {
-                return ResourceManager.GetString("FolderInNeedOfArchiving", resourceCulture);
+                return ResourceManager.GetString("FoldersInNeedOfArchiving", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Folder {0} needs to be archived (archive folder does not exist).
+        ///   Looks up a localized string similar to Folder/-s need/-s to be archived (archive folder does not exist).
         /// </summary>
-        internal static string FolderInNeedOfArchivingNoArchiveFolder {
+        internal static string FoldersInNeedOfArchivingNoArchiveFolder {
             get {
-                return ResourceManager.GetString("FolderInNeedOfArchivingNoArchiveFolder", resourceCulture);
+                return ResourceManager.GetString("FoldersInNeedOfArchivingNoArchiveFolder", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Folder {0} needs to be archived (does not contain any files).
+        ///   Looks up a localized string similar to Folder/-s need/-s to be archived (does not contain any files).
         /// </summary>
-        internal static string FolderInNeedOfArchivingNoFiles {
+        internal static string FoldersInNeedOfArchivingNoFiles {
             get {
-                return ResourceManager.GetString("FolderInNeedOfArchivingNoFiles", resourceCulture);
+                return ResourceManager.GetString("FoldersInNeedOfArchivingNoFiles", resourceCulture);
             }
         }
     }

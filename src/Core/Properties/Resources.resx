@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FolderInNeedOfArchiving" xml:space="preserve">
-    <value>Folder {0} needs to be archived</value>
+  <data name="FoldersInNeedOfArchiving" xml:space="preserve">
+    <value>Folder/-s need/-s to be archived</value>
   </data>
-  <data name="FolderInNeedOfArchivingNoArchiveFolder" xml:space="preserve">
-    <value>Folder {0} needs to be archived (archive folder does not exist)</value>
+  <data name="FoldersInNeedOfArchivingNoArchiveFolder" xml:space="preserve">
+    <value>Folder/-s need/-s to be archived (archive folder does not exist)</value>
   </data>
-  <data name="FolderInNeedOfArchivingNoFiles" xml:space="preserve">
-    <value>Folder {0} needs to be archived (does not contain any files)</value>
+  <data name="FoldersInNeedOfArchivingNoFiles" xml:space="preserve">
+    <value>Folder/-s need/-s to be archived (does not contain any files)</value>
   </data>
 </root>

@@ -1,0 +1,14 @@
+﻿@model Aspenlaub.Net.GitHub.CSharp.Backbend.ViewModel.HomeIndexViewModel
+<h1 class="jumbotron mt-4">@Model.Title</h1>
+@foreach (var backbendFoldersToBeArchivedForReason in Model.BackbendFoldersToBeArchivedPerReason) { 
+<div class="card mb-4 border-danger">
+    <div class="card-header">
+        <h2 class="card-title text-danger">@backbendFoldersToBeArchivedForReason.Reason</h2>
+    </div>
+    <div class="card-body">
+        @foreach (var folder in backbendFoldersToBeArchivedForReason.Folders) {
+            <p class="text-danger">@folder.Name</p>
+        }
+    </div>
+</div>
+}

@@ -6,7 +6,7 @@ using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class BackbendFoldersTest {
         [TestInitialize]

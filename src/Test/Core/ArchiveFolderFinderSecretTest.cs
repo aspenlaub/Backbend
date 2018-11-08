@@ -5,10 +5,8 @@ using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using CsScriptExecuter = Aspenlaub.Net.GitHub.CSharp.Backbend.Test.CsScriptExecuter;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class ArchiveFolderFinderSecretTest {
         [TestMethod]
