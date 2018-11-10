@@ -6,6 +6,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.ViewModel {
         public string Title => "Backbend";
 
         public IEnumerable<ReasonAndBackbendFoldersToBeArchived> BackbendFoldersToBeArchivedPerReason;
+        public IEnumerable<string> Errors { get; set; } = new List<string>();
     }
 
     public class ReasonAndBackbendFoldersToBeArchived {

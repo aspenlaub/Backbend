@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,14 +33,18 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
                 new BackbendFolder { Machine = Environment.MachineName, Name = folder },
                 new BackbendFolder { Machine = Environment.MachineName, Name = archiveFolder }
             };
+
             var componentProviderMock = new Mock<IComponentProvider>();
             var secretRepositoryMock = new Mock<ISecretRepository>();
             secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ISecret<BackbendFolders>>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(backbendFolders));
+            secretRepositoryMock.Setup(s => s.CompileCsLambdaAsync<string, string>(It.IsAny<CsLambda>())).Returns(
+                Task.FromResult<Func<string, string>>(s => s == folder || s == otherFolder ? archiveFolder : "")
+            );
+
             var secret = new ArchiveFolderFinderSecret();
-            secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ISecret<CsScript>>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(secret.DefaultValue));
-            secretRepositoryMock.Setup(s => s.ExecuteCsScriptAsync(It.IsAny<CsScript>(), It.Is<IList<ICsScriptArgument>>(a => ArgumentIsOneForTheTwoFolders(a, folder, otherFolder)))).Returns(Task.FromResult(archiveFolder));
-            secretRepositoryMock.Setup(s => s.ExecuteCsScriptAsync(It.IsAny<CsScript>(), It.Is<IList<ICsScriptArgument>>(a => !ArgumentIsOneForTheTwoFolders(a, folder, otherFolder)))).Returns(Task.FromResult(""));
+            secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ArchiveFolderFinderSecret>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(secret.DefaultValue));
             componentProviderMock.Setup(c => c.SecretRepository).Returns(secretRepositoryMock.Object);
+
             var sut = new BackbendFoldersAnalyser(componentProviderMock.Object);
             var errorsAndInfos = new ErrorsAndInfos();
             var result = await sut.AnalyseAsync(errorsAndInfos);
@@ -70,10 +73,6 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             File.Delete(otherTextFileName);
             Assert.AreEqual(0, Directory.GetFiles(otherFolder).Length);
             Directory.Delete(otherFolder);
-        }
-
-        private static bool ArgumentIsOneForTheTwoFolders(IEnumerable<ICsScriptArgument> arguments, string folder, string otherFolder) {
-            return arguments.Any(a => a.Name == "folder" && (a.Value == folder || a.Value == otherFolder));
         }
     }
 }

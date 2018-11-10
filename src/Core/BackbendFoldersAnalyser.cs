@@ -20,23 +20,29 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             var result = new List<BackbendFolderToBeArchived>();
             var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
-            var archiveFolderFinder = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
+            var archiveFolderFinderSecret = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
 
+            var archiveFolderFinder = await SecretRepository.CompileCsLambdaAsync<string, string>(archiveFolderFinderSecret);
+            if (archiveFolderFinder == null) {
+                errorsAndInfos.Errors.Add(Properties.Resources.CouldNotCompileFolderFinder);
+                return result;
+            }
+
             foreach (var backbendFolder in backbendFolders.FoldersOnThisMachine()) {
-                await AnalyseFolderAsync(backbendFolder, archiveFolderFinder, result);
+                AnalyseFolderAsync(backbendFolder, archiveFolderFinder, result);
                 foreach (var subFolder in Directory.GetDirectories(backbendFolder.Name).Select(f => new BackbendFolder { Machine = backbendFolder.Machine, Name = f })) {
-                    await AnalyseFolderAsync(subFolder, archiveFolderFinder, result);
+                    AnalyseFolderAsync(subFolder, archiveFolderFinder, result);
                 }
             }
 
             return result;
         }
 
-        private async Task AnalyseFolderAsync(BackbendFolder folder, ICsScript archiveFolderFinder, ICollection<BackbendFolderToBeArchived> result) {
+        private void AnalyseFolderAsync(BackbendFolder folder, Func<string, string> archiveFolderFinder, ICollection<BackbendFolderToBeArchived> result) {
             if (!Directory.Exists(folder.Name)) { return; }
 
-            var archiveFolder = await SecretRepository.ExecuteCsScriptAsync(archiveFolderFinder, new List<ICsScriptArgument> { new CsScriptArgument { Name = "folder", Value = folder.Name } });
+            var archiveFolder = archiveFolderFinder(folder.Name);
             if (archiveFolder == "" || archiveFolder == folder.Name) { return; }
 
             if (archiveFolder == null) {

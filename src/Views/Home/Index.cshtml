@@ -1,5 +1,17 @@
 ﻿@model Aspenlaub.Net.GitHub.CSharp.Backbend.ViewModel.HomeIndexViewModel
 <h1 class="jumbotron mt-4">@Model.Title</h1>
+@if (Model.Errors.Any()) {
+    <div class="card mb-4 border-danger">
+        <div class="card-header">
+            <h2 class="card-title text-danger">Error</h2>
+        </div>
+        <div class="card-body">
+            @foreach (var error in Model.Errors) {
+                <p class="text-danger">@error</p>
+            }
+        </div>
+    </div>
+}
 @foreach (var backbendFoldersToBeArchivedForReason in Model.BackbendFoldersToBeArchivedPerReason) { 
 <div class="card mb-4 border-danger">
     <div class="card-header">

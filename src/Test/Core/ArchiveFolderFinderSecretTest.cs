@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
@@ -25,17 +23,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             if (!Directory.Exists(folder)) {
                 Directory.CreateDirectory(folder);
             }
-            var archiveFolder = await secretRepository.ExecuteCsScriptAsync(secret.DefaultValue, new List<ICsScriptArgument> { new CsScriptArgument { Name = "folder", Value = folder } });
+
+            var archiveFolderFinder = await secretRepository.CompileCsLambdaAsync<string, string>(secret.DefaultValue);
+            var archiveFolder = archiveFolderFinder(folder);
             Assert.IsTrue(archiveFolder.Length != 0);
             Assert.IsTrue(archiveFolder != folder);
             Assert.IsTrue(Directory.Exists(archiveFolder));
             Assert.AreEqual(0, Directory.GetFiles(archiveFolder).Length);
             Directory.Delete(archiveFolder);
-            var otherArchiveFolder = await secretRepository.ExecuteCsScriptAsync(secret.DefaultValue, new List<ICsScriptArgument> { new CsScriptArgument { Name = "folder", Value = folder } });
+            var otherArchiveFolder = archiveFolderFinder(folder);
             Assert.AreEqual(archiveFolder, otherArchiveFolder);
             Assert.IsTrue(Directory.Exists(archiveFolder));
-            otherArchiveFolder = await secretRepository.ExecuteCsScriptAsync(secret.DefaultValue, new List<ICsScriptArgument> { new CsScriptArgument { Name = "folder", Value = folder } });
-            Assert.IsTrue(Directory.Exists(otherArchiveFolder));
         }
     }
 }

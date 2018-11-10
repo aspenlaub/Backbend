@@ -61,6 +61,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Folder finder could not be compiled.
+        /// </summary>
+        internal static string CouldNotCompileFolderFinder {
+            get {
+                return ResourceManager.GetString("CouldNotCompileFolderFinder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folder/-s need/-s to be archived.
         /// </summary>
         internal static string FoldersInNeedOfArchiving {

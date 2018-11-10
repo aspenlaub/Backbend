@@ -99,10 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin">
-      <Version>1.0.6886.33329</Version>
+      <Version>1.0.6888.23022</Version>
     </PackageReference>
     <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Pegh">
-      <Version>1.0.6886.33107</Version>
+      <Version>1.0.6888.22809</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
       <Version>2.6.2</Version>

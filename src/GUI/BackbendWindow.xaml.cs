@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -17,6 +16,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.GUI {
     /// <summary>
     /// Interaction logic for BackbendWindow.xaml
     /// </summary>
+    // ReSharper disable once UnusedMember.Global
     public partial class BackbendWindow {
         private bool vNavigated;
 

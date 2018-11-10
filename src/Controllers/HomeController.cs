@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.ViewModel;
@@ -24,7 +23,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Controllers {
                 BackbendFoldersToBeArchivedPerReason = backbendFoldersToBeArchived.Select(b => b.Reason).Distinct()
                     .Select(r => new ReasonAndBackbendFoldersToBeArchived {
                         Reason = r, Folders = backbendFoldersToBeArchived.Where(b => b.Reason == r).Select(b => b.Folder)
-                    })
+                    }),
+                Errors = errorsAndInfos.Errors
             };
             return View(model);
         }
