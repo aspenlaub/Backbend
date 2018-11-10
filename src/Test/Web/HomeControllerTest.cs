@@ -7,7 +7,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Web {
     public class HomeControllerTest {
         private const string BaseUrl = "http://localhost:65169/";
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public async Task CanGetIndex() {
             using (var client = ControllerTestHelpers.CreateHttpClient()) {
                 var response = await client.GetAsync(BaseUrl);
