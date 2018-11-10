@@ -17,23 +17,26 @@
   <ItemGroup>
     <Compile Remove="Core\**" />
     <Compile Remove="GUI\**" />
+    <Compile Remove="Model\**" />
     <Compile Remove="Nui\**" />
     <Compile Remove="Test\**" />
     <Content Remove="Core\**" />
     <Content Remove="GUI\**" />
+    <Content Remove="Model\**" />
     <Content Remove="Nui\**" />
     <Content Remove="Test\**" />
     <EmbeddedResource Remove="Core\**" />
     <EmbeddedResource Remove="GUI\**" />
+    <EmbeddedResource Remove="Model\**" />
     <EmbeddedResource Remove="Nui\**" />
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Core\**" />
     <None Remove="GUI\**" />
+    <None Remove="Model\**" />
     <None Remove="Nui\**" />
     <None Remove="Test\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
