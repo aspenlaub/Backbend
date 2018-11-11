@@ -1,6 +1,7 @@
 ﻿@using Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel
 @model Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel.HomeIndexViewModel
 <h1 class="jumbotron mt-4">@Model.Title</h1>
+<button class="btn btn-primary mb-4" id="refresh">Refresh</button>
 @if (Model.Errors.Any()) {
     <div class="card mb-4 border-danger">
         <div class="card-header">
