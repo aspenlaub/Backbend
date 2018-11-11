@@ -15,6 +15,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <GenerateBuildInfoConfigFile>false</GenerateBuildInfoConfigFile>
+    <StartupObject>Aspenlaub.Net.GitHub.CSharp.Backbend.App</StartupObject>
+    <ApplicationIcon>filing.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,12 +37,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Aspenlaub.Net.GitHub.CSharp.Backbend.App</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>filing.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
