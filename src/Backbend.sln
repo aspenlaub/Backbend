@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backbend", "Backbend.csproj", "{5B36ADC7-16BF-493A-A2A7-EE0AFAFFD2BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backbend", "Backbend.csproj", "{289BCCAB-02B0-4D08-920A-B4A844883248}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backbend.Web", "Web\Backbend.Web.csproj", "{5B36ADC7-16BF-493A-A2A7-EE0AFAFFD2BB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backbend.Core", "Core\Backbend.Core.csproj", "{47AF17B4-8779-4774-B174-712067B02AEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backbend.Test", "Test\Backbend.Test.csproj", "{F300FE4E-3DB8-45AE-A2E0-AD7E132BCB3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backbend.GUI", "GUI\Backbend.GUI.csproj", "{289BCCAB-02B0-4D08-920A-B4A844883248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

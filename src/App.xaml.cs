@@ -1,4 +1,4 @@
-﻿namespace Aspenlaub.Net.GitHub.CSharp.Backbend.GUI {
+﻿namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

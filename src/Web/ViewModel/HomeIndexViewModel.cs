@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.ViewModel {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel {
     public class HomeIndexViewModel {
         public string Title => "Backbend";
 

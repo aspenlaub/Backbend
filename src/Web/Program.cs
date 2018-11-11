@@ -3,7 +3,7 @@ using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
     public class Program {
         public static void Main(string[] args) {
             CreateWebHostBuilder(args).Build().Run();

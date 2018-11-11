@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
-using Aspenlaub.Net.GitHub.CSharp.Backbend.ViewModel;
+using Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Controllers {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web.Controllers {
     public class HomeController : Controller {
         private readonly IComponentProvider vComponentProvider;
 

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.GUI.Properties {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

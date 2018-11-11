@@ -12,7 +12,7 @@ using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.GUI {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
     /// <summary>
     /// Interaction logic for BackbendWindow.xaml
     /// </summary>

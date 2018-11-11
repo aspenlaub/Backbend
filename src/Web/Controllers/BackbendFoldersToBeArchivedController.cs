@@ -6,7 +6,7 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Controllers {
+namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web.Controllers {
     public class BackbendFoldersToBeArchivedController : ODataController {
         private readonly IComponentProvider vComponentProvider;
 
