@@ -14,7 +14,7 @@ Yes. The folder list and the mapping function from sub folder to zip folder are 
 
 ### Class ```BackbendFolder```
 
-Class ```BackbendFolder``` is a piece of configuration, a machine name and a folder that holds projects you want to archive from time to time.
+Class ```BackbendFolder``` is a piece of configuration, a folder that holds projects you want to archive from time to time. The folder may contain placeholders which are resolved using Pegh's secret machine drives and logical filenames.
 
 ### Class ```BackbendFolders```
 
