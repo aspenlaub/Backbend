@@ -19,8 +19,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
 
         [TestMethod]
         public void CanGetBackbendFoldersDefault() {
+            var errorsAndInfos = new ErrorsAndInfos();
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var backbendFolders = backbendFoldersSecret.DefaultValue;
+            backbendFolders.Resolve(errorsAndInfos);
+            Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, backbendFolders.Count);
         }
 
@@ -33,15 +36,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             var backbendFolders = await secretRepository.GetAsync(backbendFoldersSecret, errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.IsNotNull(backbendFolders);
-            Assert.IsTrue(backbendFolders.Count >= 4);
+            Assert.IsTrue(backbendFolders.Count >= 3);
             var clone = backbendFolders.Clone();
             Assert.AreEqual(backbendFolders.Count, clone.Count);
             for(var i = 0; i < backbendFolders.Count; i ++) {
                 Assert.AreEqual(backbendFolders[i].Name, clone[i].Name);
             }
-
-            var foldersOnThisMachine = backbendFolders.FoldersOnThisMachine().ToList();
-            Assert.IsTrue(foldersOnThisMachine.Count != 0);
+            backbendFolders.Resolve(errorsAndInfos);
+            Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         }
     }
 }

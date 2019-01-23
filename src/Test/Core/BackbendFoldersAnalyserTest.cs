@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -30,15 +31,21 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             File.Delete(archiveFileName);
 
             var backbendFolders = new BackbendFolders {
-                new BackbendFolder { Machine = Environment.MachineName, Name = folder },
-                new BackbendFolder { Machine = Environment.MachineName, Name = archiveFolder }
+                new BackbendFolder { Name = folder },
+                new BackbendFolder { Name = archiveFolder }
             };
+
+            var errorsAndInfos = new ErrorsAndInfos();
+            backbendFolders.Resolve(errorsAndInfos);
+            Assert.IsFalse(errorsAndInfos.AnyErrors(), errorsAndInfos.ErrorsToString());
 
             var componentProviderMock = new Mock<IComponentProvider>();
             var secretRepositoryMock = new Mock<ISecretRepository>();
             secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ISecret<BackbendFolders>>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(backbendFolders));
             secretRepositoryMock.Setup(s => s.CompileCsLambdaAsync<string, string>(It.IsAny<CsLambda>())).Returns(
-                Task.FromResult<Func<string, string>>(s => s == folder || s == otherFolder ? archiveFolder : "")
+                Task.FromResult<Func<string, string>>(
+                    s => new Folder(s).FullName == new Folder(folder).FullName ? archiveFolder : ""
+                )
             );
 
             var secret = new ArchiveFolderFinderSecret();
@@ -46,7 +53,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             componentProviderMock.Setup(c => c.SecretRepository).Returns(secretRepositoryMock.Object);
 
             var sut = new BackbendFoldersAnalyser(componentProviderMock.Object);
-            var errorsAndInfos = new ErrorsAndInfos();
+            errorsAndInfos = new ErrorsAndInfos();
             var result = await sut.AnalyseAsync(errorsAndInfos);
             var resultList = result.ToList();
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));

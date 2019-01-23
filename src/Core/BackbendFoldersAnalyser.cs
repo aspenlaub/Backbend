@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
@@ -20,6 +22,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             var result = new List<BackbendFolderToBeArchived>();
             var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
+            backbendFolders.Resolve(errorsAndInfos);
+            if (errorsAndInfos.AnyErrors()) { return result; }
             var archiveFolderFinderSecret = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
 
@@ -29,9 +33,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
                 return result;
             }
 
-            foreach (var backbendFolder in backbendFolders.FoldersOnThisMachine()) {
+            foreach (var backbendFolder in backbendFolders) {
                 AnalyseFolderAsync(backbendFolder, archiveFolderFinder, result);
-                foreach (var subFolder in Directory.GetDirectories(backbendFolder.Name).Select(f => new BackbendFolder { Machine = backbendFolder.Machine, Name = f })) {
+                foreach (var subFolder in Directory.GetDirectories(backbendFolder.GetFolder().FullName).Select(f => new BackbendFolder { Name = f })) {
+                    subFolder.SetFolder(new Folder(subFolder.Name));
                     AnalyseFolderAsync(subFolder, archiveFolderFinder, result);
                 }
             }
@@ -40,10 +45,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
         }
 
         private void AnalyseFolderAsync(BackbendFolder folder, Func<string, string> archiveFolderFinder, ICollection<BackbendFolderToBeArchived> result) {
-            if (!Directory.Exists(folder.Name)) { return; }
+            if (!folder.GetFolder().Exists()) { return; }
 
-            var archiveFolder = archiveFolderFinder(folder.Name);
-            if (archiveFolder == "" || archiveFolder == folder.Name) { return; }
+            var backbendFolderFullName = folder.GetFolder().FullName;
+            var archiveFolder = archiveFolderFinder(backbendFolderFullName);
+            if (archiveFolder == "" || archiveFolder == backbendFolderFullName) { return; }
 
             if (archiveFolder == null) {
                 throw new Exception("Error in archive folder finder");
@@ -54,7 +60,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
                 return;
             }
 
-            var latestModificationTime = LatestModificationTime(folder.Name, "*.*", SearchOption.AllDirectories);
+            var latestModificationTime = LatestModificationTime(backbendFolderFullName, "*.*", SearchOption.AllDirectories);
             if (latestModificationTime < new DateTime(2000, 1, 1)) {
                 result.Add(new BackbendFolderToBeArchived { Folder = folder, Reason = Properties.Resources.FoldersInNeedOfArchivingNoFiles });
                 return;
