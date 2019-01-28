@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin">
-      <Version>1.0.6961.34546</Version>
+      <Version>1.0.6962.23494</Version>
     </PackageReference>
     <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Pegh">
       <Version>1.0.6961.33473</Version>

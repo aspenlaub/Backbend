@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,7 +9,9 @@ using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
 using TimeSpan = System.TimeSpan;
 
@@ -28,7 +29,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
 
         public BackbendWindow() {
             InitializeComponent();
-            vDvinRepository = new DvinRepository();
+            vDvinRepository = new DvinRepository(new ComponentProvider());
         }
 
         private void HtmlOutput_OnNavigated(object sender, NavigationEventArgs e) {
@@ -39,7 +40,12 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
         private async void BackbendWindow_OnLoaded(object sender, RoutedEventArgs e) {
             await NavigateToMessage($"Starting {Constants.BackbendAppId}&hellip;");
 
-            var dvinApp = await vDvinRepository.LoadAsync(Constants.BackbendAppId);
+            var errorsAndInfos = new ErrorsAndInfos();
+            var dvinApp = await vDvinRepository.LoadAsync(Constants.BackbendAppId, errorsAndInfos);
+            if (errorsAndInfos.AnyErrors()) {
+                await NavigateToMessage(errorsAndInfos.ErrorsToString());
+                return;
+            }
             if (dvinApp == null) {
                 await NavigateToMessage($"{Constants.BackbendAppId} app not found");
                 return;
@@ -60,7 +66,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
         private async Task<bool> StartAppAndReturnSuccess(IDvinApp dvinApp) {
             var fileSystemService = new FileSystemService();
             var errorsAndInfos = new ErrorsAndInfos();
-            if (!dvinApp.HasAppBeenPublishedAfterLatestSourceChanges(Environment.MachineName, fileSystemService)) {
+            if (!dvinApp.HasAppBeenPublishedAfterLatestSourceChanges(fileSystemService)) {
                 dvinApp.Publish(fileSystemService, true, errorsAndInfos);
                 if (errorsAndInfos.AnyErrors()) {
                     await NavigateToMessage(string.Join("<br>", errorsAndInfos.Errors));
@@ -68,7 +74,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
                 }
             }
 
-            if (!dvinApp.HasAppBeenPublishedAfterLatestSourceChanges(Environment.MachineName, fileSystemService)) {
+            if (!dvinApp.HasAppBeenPublishedAfterLatestSourceChanges(fileSystemService)) {
                 await NavigateToMessage($"{Constants.BackbendAppId} has not been published since the latest source code changes");
                 return false;
             }
