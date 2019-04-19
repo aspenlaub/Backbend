@@ -116,7 +116,7 @@
   <ItemGroup>
     <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="1.0.7035.28377" />
     <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Pegh" Version="1.0.7035.28015" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
