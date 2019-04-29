@@ -80,7 +80,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
             }
 
             vProcess = dvinApp.Start(fileSystemService, errorsAndInfos);
-            Wait.Until(() => dvinApp.IsPortListenedTo(), TimeSpan.FromSeconds(5));
+            Wait.Until(() => dvinApp.IsPortListenedTo(), TimeSpan.FromSeconds(30));
             if (errorsAndInfos.AnyErrors()) {
                 await NavigateToMessage(string.Join("<br>", errorsAndInfos.Errors));
                 return false;
