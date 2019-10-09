@@ -8,15 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web.Controllers {
     public class HomeController : Controller {
-        private readonly IComponentProvider vComponentProvider;
+        private readonly ISecretRepository vSecretRepository;
+        private readonly IFolderResolver vFolderResolver;
 
-        public HomeController(IComponentProvider componentProvider) {
-            vComponentProvider = componentProvider;
+        public HomeController(IFolderResolver folderResolver, ISecretRepository secretRepository) {
+            vFolderResolver = folderResolver;
+            vSecretRepository = secretRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index() {
-            var analyzer = new BackbendFoldersAnalyser(vComponentProvider);
+            var analyzer = new BackbendFoldersAnalyser(vFolderResolver, vSecretRepository);
             var errorsAndInfos = new ErrorsAndInfos();
             var backbendFoldersToBeArchived = (await analyzer.AnalyseAsync(errorsAndInfos)).ToList();
             var model = new HomeIndexViewModel {

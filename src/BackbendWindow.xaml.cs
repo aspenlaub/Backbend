@@ -8,11 +8,12 @@ using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Interfaces;
-using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
+using Autofac;
+using IContainer = Autofac.IContainer;
 using TimeSpan = System.TimeSpan;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
@@ -25,11 +26,12 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
 
         private Process vProcess;
 
-        private readonly IDvinRepository vDvinRepository;
+        private readonly IContainer vContainer;
 
         public BackbendWindow() {
             InitializeComponent();
-            vDvinRepository = new DvinRepository(new ComponentProvider());
+            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter()).RegisterForDvin();
+            vContainer = builder.Build();
         }
 
         private void HtmlOutput_OnNavigated(object sender, NavigationEventArgs e) {
@@ -41,7 +43,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
             await NavigateToMessage($"Starting {Constants.BackbendAppId}&hellip;");
 
             var errorsAndInfos = new ErrorsAndInfos();
-            var dvinApp = await vDvinRepository.LoadAsync(Constants.BackbendAppId, errorsAndInfos);
+            var dvinApp = await vContainer.Resolve<IDvinRepository>().LoadAsync(Constants.BackbendAppId, errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) {
                 await NavigateToMessage(errorsAndInfos.ErrorsToString());
                 return;

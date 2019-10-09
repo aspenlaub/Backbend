@@ -18,8 +18,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Web {
                 var response = await client.GetAsync(BaseUrl);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 var responseString = await response.Content.ReadAsStringAsync();
-                var backbendFoldersToBeArhived = JsonConvert.DeserializeObject<ODataResponse<BackbendFolderToBeArchived>>(responseString).Value.ToList();
-                Assert.IsNotNull(backbendFoldersToBeArhived);
+                var backbendFoldersToBeArchived = JsonConvert.DeserializeObject<ODataResponse<BackbendFolderToBeArchived>>(responseString).Value.ToList();
+                Assert.IsNotNull(backbendFoldersToBeArchived);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Attributes;
+using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
@@ -27,7 +27,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
             services.AddOData();
             services.AddMvc(config => config.Filters.Add(new DvinExceptionFilterAttribute()));
 
-            services.AddTransient<IComponentProvider, ComponentProvider>();
+            services.UseDvinAndPegh(new DummyCsArgumentPrompter());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

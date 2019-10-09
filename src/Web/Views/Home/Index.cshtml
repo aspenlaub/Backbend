@@ -1,5 +1,4 @@
-﻿@using Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel
-@model Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel.HomeIndexViewModel
+﻿@model Aspenlaub.Net.GitHub.CSharp.Backbend.Web.ViewModel.HomeIndexViewModel
 <h1 class="jumbotron mt-4">@Model.Title</h1>
 <button class="btn btn-primary mb-4" id="refresh">Refresh</button>
 @if (Model.Errors.Any()) {
@@ -14,7 +13,7 @@
         </div>
     </div>
 }
-@foreach (var backbendFoldersToBeArchivedForReason in Model.BackbendFoldersToBeArchivedPerReason) { 
+@foreach (var backbendFoldersToBeArchivedForReason in Model.BackbendFoldersToBeArchivedPerReason) {
 <div class="card mb-4 border-danger">
     <div class="card-header">
         <h2 class="card-title text-danger">@backbendFoldersToBeArchivedForReason.Reason</h2>

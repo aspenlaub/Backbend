@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
@@ -12,10 +11,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             return clone;
         }
 
-        public void Resolve(IErrorsAndInfos errorsAndInfos) {
-            var componentProvider = new ComponentProvider();
+        public void Resolve(IFolderResolver folderResolver, IErrorsAndInfos errorsAndInfos) {
             foreach (var backbendFolder in this) {
-                backbendFolder.SetFolder(componentProvider.FolderResolver.Resolve(backbendFolder.Name, errorsAndInfos));
+                backbendFolder.SetFolder(folderResolver.Resolve(backbendFolder.Name, errorsAndInfos));
             }
         }
     }

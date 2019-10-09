@@ -4,11 +4,20 @@ using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class BackbendFoldersTest {
+        private readonly IContainer vContainer;
+
+        public BackbendFoldersTest() {
+            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter());
+            vContainer = builder.Build();
+        }
+
         [TestInitialize]
         public void Initialize() {
             var folder = BackbendFoldersSecret.DefaultFolder;
@@ -22,15 +31,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             var errorsAndInfos = new ErrorsAndInfos();
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var backbendFolders = backbendFoldersSecret.DefaultValue;
-            backbendFolders.Resolve(errorsAndInfos);
+            backbendFolders.Resolve(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, backbendFolders.Count);
         }
 
         [TestMethod]
         public async Task CanGetBackbendFolders() {
-            var componentProvider = new ComponentProvider();
-            var secretRepository = componentProvider.SecretRepository;
+            var secretRepository = vContainer.Resolve<ISecretRepository>();
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var errorsAndInfos = new ErrorsAndInfos();
             var backbendFolders = await secretRepository.GetAsync(backbendFoldersSecret, errorsAndInfos);
@@ -42,7 +50,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             for(var i = 0; i < backbendFolders.Count; i ++) {
                 Assert.AreEqual(backbendFolders[i].Name, clone[i].Name);
             }
-            backbendFolders.Resolve(errorsAndInfos);
+            backbendFolders.Resolve(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         }
     }

@@ -10,19 +10,19 @@ using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
     public class BackbendFoldersAnalyser {
         private const int ArchiveWithinHowManyDays = 28;
-        protected IComponentProvider ComponentProvider;
-        protected ISecretRepository SecretRepository;
+        protected readonly ISecretRepository SecretRepository;
+        protected readonly IFolderResolver FolderResolver;
 
-        public BackbendFoldersAnalyser(IComponentProvider componentProvider) {
-            ComponentProvider = componentProvider;
-            SecretRepository = ComponentProvider.SecretRepository;
+        public BackbendFoldersAnalyser(IFolderResolver folderResolver, ISecretRepository secretRepository) {
+            FolderResolver = folderResolver;
+            SecretRepository = secretRepository;
         }
 
         public async Task<IEnumerable<BackbendFolderToBeArchived>> AnalyseAsync(IErrorsAndInfos errorsAndInfos) {
             var result = new List<BackbendFolderToBeArchived>();
             var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
-            backbendFolders.Resolve(errorsAndInfos);
+            backbendFolders.Resolve(FolderResolver, errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
             var archiveFolderFinderSecret = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }

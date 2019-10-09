@@ -3,15 +3,24 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class BackbendFoldersAnalyserTest {
+        private readonly IContainer vContainer;
+
+        public BackbendFoldersAnalyserTest() {
+            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter());
+            vContainer = builder.Build();
+        }
+
         [TestMethod]
         public async Task CanAnalyseBackbendFolders() {
             var folder = BackbendFoldersSecret.DefaultFolder;
@@ -36,10 +45,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             };
 
             var errorsAndInfos = new ErrorsAndInfos();
-            backbendFolders.Resolve(errorsAndInfos);
+            backbendFolders.Resolve(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.AnyErrors(), errorsAndInfos.ErrorsToString());
 
-            var componentProviderMock = new Mock<IComponentProvider>();
             var secretRepositoryMock = new Mock<ISecretRepository>();
             secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ISecret<BackbendFolders>>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(backbendFolders));
             secretRepositoryMock.Setup(s => s.CompileCsLambdaAsync<string, string>(It.IsAny<CsLambda>())).Returns(
@@ -50,9 +58,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
 
             var secret = new ArchiveFolderFinderSecret();
             secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ArchiveFolderFinderSecret>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(secret.DefaultValue));
-            componentProviderMock.Setup(c => c.SecretRepository).Returns(secretRepositoryMock.Object);
 
-            var sut = new BackbendFoldersAnalyser(componentProviderMock.Object);
+            var sut = new BackbendFoldersAnalyser(vContainer.Resolve<IFolderResolver>(), secretRepositoryMock.Object);
             errorsAndInfos = new ErrorsAndInfos();
             var result = await sut.AnalyseAsync(errorsAndInfos);
             var resultList = result.ToList();

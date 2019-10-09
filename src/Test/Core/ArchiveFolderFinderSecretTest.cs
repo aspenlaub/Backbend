@@ -2,11 +2,20 @@
 using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class ArchiveFolderFinderSecretTest {
+        private readonly IContainer vContainer;
+
+        public ArchiveFolderFinderSecretTest() {
+            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter());
+            vContainer = builder.Build();
+        }
+
         [TestMethod]
         public void CanGetDefaultArchiveFolderAndSecretGuid() {
             var secret = new ArchiveFolderFinderSecret();
@@ -16,8 +25,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
 
         [TestMethod]
         public async Task CanGetArchiveFolder() {
-            var componentProvider = new ComponentProvider();
-            var secretRepository = componentProvider.SecretRepository;
+            var secretRepository = vContainer.Resolve<ISecretRepository>();
             var secret = new ArchiveFolderFinderSecret();
             var folder = BackbendFoldersSecret.DefaultFolder;
             if (!Directory.Exists(folder)) {
