@@ -30,7 +30,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
 
         public BackbendWindow() {
             InitializeComponent();
-            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter()).RegisterForDvin();
+            var builder = new ContainerBuilder().UseDvinAndPegh(new DummyCsArgumentPrompter());
             vContainer = builder.Build();
         }
 

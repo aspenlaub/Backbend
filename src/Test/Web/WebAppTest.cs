@@ -14,7 +14,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Web {
         private readonly IContainer vContainer;
 
         public WebAppTest() {
-            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter()).RegisterForDvin();
+            var builder = new ContainerBuilder().UseDvinAndPegh(new DummyCsArgumentPrompter());
             vContainer = builder.Build();
         }
 

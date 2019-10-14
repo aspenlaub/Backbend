@@ -12,9 +12,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
 #if DEBUG
-                .UseDvin(Constants.BackbendAppId, false, args)
+                .UseDvinAndPegh(Constants.BackbendAppId, false, args)
 #else
-                .UseDvin(Constants.BackbendAppId, true, args)
+                .UseDvinAndPegh(Constants.BackbendAppId, true, args)
 #endif
                 .UseStartup<Startup>();
     }

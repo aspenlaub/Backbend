@@ -17,7 +17,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
         private readonly IContainer vContainer;
 
         public BackbendFoldersAnalyserTest() {
-            var builder = new ContainerBuilder().RegisterForPegh(new DummyCsArgumentPrompter());
+            var builder = new ContainerBuilder().UsePegh(new DummyCsArgumentPrompter());
             vContainer = builder.Build();
         }
 
