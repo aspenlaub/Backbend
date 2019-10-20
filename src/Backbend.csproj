@@ -12,6 +12,7 @@
     <Deterministic>false</Deterministic>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <StartupObject>Aspenlaub.Net.GitHub.CSharp.Backbend.App</StartupObject>
+    <RazorCompileToolset>PrecompilationTool</RazorCompileToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
