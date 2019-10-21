@@ -42,7 +42,7 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.DvinStandard" Version="1.0.7228.22427" />
+    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.DvinStandard" Version="1.0.7233.33897" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
