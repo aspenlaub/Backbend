@@ -9,12 +9,14 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Deterministic>false</Deterministic>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <AssemblyTitle>Aspenlaub.Net.GitHub.CSharp.Backbend.Test</AssemblyTitle>
+    <AssemblyProduct>Aspenlaub.Net.GitHub.CSharp.Backbend.Test</AssemblyProduct>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
   <ItemGroup>
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="1.0.7231.27297" />
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Pegh" Version="1.0.7228.29540" />
+    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="2.0.90.1155" />
+    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Pegh" Version="2.0.90.1141" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
