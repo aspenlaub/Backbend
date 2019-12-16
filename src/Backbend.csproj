@@ -49,6 +49,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Dvin" Version="2.0.145.1012" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="Core\Backbend.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -63,8 +66,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="2.0.94.907" />
   </ItemGroup>
 </Project>
