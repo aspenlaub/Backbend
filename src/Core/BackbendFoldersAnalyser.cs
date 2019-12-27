@@ -18,7 +18,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             SecretRepository = secretRepository;
         }
 
-        public async Task<IEnumerable<BackbendFolderToBeArchived>> AnalyseAsync(IErrorsAndInfos errorsAndInfos) {
+        public async Task<IEnumerable<BackbendFolderToBeArchived>> AnalyzeAsync(IErrorsAndInfos errorsAndInfos) {
             var result = new List<BackbendFolderToBeArchived>();
             var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
@@ -34,17 +34,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             }
 
             foreach (var backbendFolder in backbendFolders) {
-                AnalyseFolderAsync(backbendFolder, archiveFolderFinder, result);
+                AnalyzeFolderAsync(backbendFolder, archiveFolderFinder, result);
                 foreach (var subFolder in Directory.GetDirectories(backbendFolder.GetFolder().FullName).Select(f => new BackbendFolder { Name = f })) {
                     subFolder.SetFolder(new Folder(subFolder.Name));
-                    AnalyseFolderAsync(subFolder, archiveFolderFinder, result);
+                    AnalyzeFolderAsync(subFolder, archiveFolderFinder, result);
                 }
             }
 
             return result;
         }
 
-        private void AnalyseFolderAsync(BackbendFolder folder, Func<string, string> archiveFolderFinder, ICollection<BackbendFolderToBeArchived> result) {
+        private void AnalyzeFolderAsync(BackbendFolder folder, Func<string, string> archiveFolderFinder, ICollection<BackbendFolderToBeArchived> result) {
             if (!folder.GetFolder().Exists()) { return; }
 
             var backbendFolderFullName = folder.GetFolder().FullName;

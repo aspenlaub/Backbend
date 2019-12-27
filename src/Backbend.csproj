@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>Aspenlaub.Net.GitHub.CSharp.Backbend</AssemblyName>
     <RootNamespace>Aspenlaub.Net.GitHub.CSharp.Backbend</RootNamespace>
@@ -49,7 +49,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.145.1012" />
+    <PackageReference Include="Dvin" Version="2.0.150.791" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Core\Backbend.Core.csproj" />

@@ -13,7 +13,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web.Attributes {
         }
 
         public override void OnException(ExceptionContext context) {
-            ExceptionSaver.SaveUnhandledException(ExceptionLogFolder, context.Exception, nameof(GitHub.CSharp.Dvin), e => { });
+            ExceptionSaver.SaveUnhandledException(ExceptionLogFolder, context.Exception, nameof(Dvin), e => { });
             context.Result = new JsonResult(InternalServerError.Create("An exception was logged. We are sorry for the inconvenience."));
         }
     }

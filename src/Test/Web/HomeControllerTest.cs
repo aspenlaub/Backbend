@@ -9,12 +9,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Web {
 
         [TestMethod, Ignore]
         public async Task CanGetIndex() {
-            using (var client = ControllerTestHelpers.CreateHttpClient()) {
-                var response = await client.GetAsync(BaseUrl);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                var responseString = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(responseString.Contains("jumbotron"));
-            }
+            using var client = ControllerTestHelpers.CreateHttpClient();
+            var response = await client.GetAsync(BaseUrl);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(responseString.Contains("jumbotron"));
         }
     }
 }

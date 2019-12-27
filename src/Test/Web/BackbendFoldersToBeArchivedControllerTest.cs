@@ -13,14 +13,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Web {
 
         [TestMethod]
         public async Task CanGetBackbendFoldersToBeArchived() {
-            using (var client = ControllerTestHelpers.CreateHttpClient()) {
-                client.Timeout = TimeSpan.FromMinutes(5);
-                var response = await client.GetAsync(BaseUrl);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                var responseString = await response.Content.ReadAsStringAsync();
-                var backbendFoldersToBeArchived = JsonConvert.DeserializeObject<ODataResponse<BackbendFolderToBeArchived>>(responseString).Value.ToList();
-                Assert.IsNotNull(backbendFoldersToBeArchived);
-            }
+            using var client = ControllerTestHelpers.CreateHttpClient();
+            client.Timeout = TimeSpan.FromMinutes(5);
+            var response = await client.GetAsync(BaseUrl);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var backbendFoldersToBeArchived = JsonConvert.DeserializeObject<ODataResponse<BackbendFolderToBeArchived>>(responseString).Value.ToList();
+            Assert.IsNotNull(backbendFoldersToBeArchived);
         }
     }
 }

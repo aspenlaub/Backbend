@@ -22,7 +22,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
         }
 
         [TestMethod]
-        public async Task CanAnalyseBackbendFolders() {
+        public async Task CanAnalyzeBackbendFolders() {
             var folder = BackbendFoldersSecret.DefaultFolder;
             var archiveFolder = folder.Replace(@"\Test\", @"\TestArchive\");
             if (!Directory.Exists(archiveFolder)) {
@@ -61,14 +61,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
 
             var sut = new BackbendFoldersAnalyser(vContainer.Resolve<IFolderResolver>(), secretRepositoryMock.Object);
             errorsAndInfos = new ErrorsAndInfos();
-            var result = await sut.AnalyseAsync(errorsAndInfos);
+            var result = await sut.AnalyzeAsync(errorsAndInfos);
             var resultList = result.ToList();
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, resultList.Count);
 
             File.WriteAllText(archiveFileName, textFileName);
 
-            result = await sut.AnalyseAsync(errorsAndInfos);
+            result = await sut.AnalyzeAsync(errorsAndInfos);
             resultList = result.ToList();
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(0, resultList.Count);
@@ -77,7 +77,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             File.WriteAllText(otherTextFileName, otherTextFileName);
             File.SetLastWriteTime(otherTextFileName, DateTime.Now.AddDays(29));
 
-            result = await sut.AnalyseAsync(errorsAndInfos);
+            result = await sut.AnalyzeAsync(errorsAndInfos);
             resultList = result.ToList();
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, resultList.Count);

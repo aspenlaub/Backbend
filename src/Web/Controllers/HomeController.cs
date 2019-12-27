@@ -20,7 +20,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web.Controllers {
         public async Task<IActionResult> Index() {
             var analyzer = new BackbendFoldersAnalyser(vFolderResolver, vSecretRepository);
             var errorsAndInfos = new ErrorsAndInfos();
-            var backbendFoldersToBeArchived = (await analyzer.AnalyseAsync(errorsAndInfos)).ToList();
+            var backbendFoldersToBeArchived = (await analyzer.AnalyzeAsync(errorsAndInfos)).ToList();
             var model = new HomeIndexViewModel {
                 BackbendFoldersToBeArchivedPerReason = backbendFoldersToBeArchived.Select(b => b.Reason).Distinct()
                     .Select(r => new ReasonAndBackbendFoldersToBeArchived {
