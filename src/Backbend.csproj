@@ -65,6 +65,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.189.523" />
+    <PackageReference Include="Dvin" Version="2.0.190.929" />
   </ItemGroup>
 </Project>
