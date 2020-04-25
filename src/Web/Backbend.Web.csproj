@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DvinStandard" Version="2.0.203.1187" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Backbend.Core.csproj" />
