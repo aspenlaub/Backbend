@@ -44,6 +44,8 @@
   <ItemGroup>
     <PackageReference Include="DvinStandard" Version="2.0.479.919" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.4" />
+    <PackageReference Include="Microsoft.OData.Core" Version="7.8.1" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="7.8.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Backbend.Core.csproj" />
