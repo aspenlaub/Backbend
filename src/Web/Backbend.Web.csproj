@@ -42,7 +42,7 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DvinStandard" Version="2.0.573.1112" />
+    <PackageReference Include="DvinStandard" Version="2.0.610.1070" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.6" />
     <PackageReference Include="Microsoft.OData.Core" Version="7.8.3" />
     <PackageReference Include="Microsoft.OData.Edm" Version="7.8.3" />
