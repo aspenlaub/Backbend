@@ -45,7 +45,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             };
 
             var errorsAndInfos = new ErrorsAndInfos();
-            backbendFolders.Resolve(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
+            await backbendFolders.ResolveAsync(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.AnyErrors(), errorsAndInfos.ErrorsToString());
 
             var secretRepositoryMock = new Mock<ISecretRepository>();

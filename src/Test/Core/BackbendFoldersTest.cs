@@ -27,11 +27,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
         }
 
         [TestMethod]
-        public void CanGetBackbendFoldersDefault() {
+        public async Task CanGetBackbendFoldersDefault() {
             var errorsAndInfos = new ErrorsAndInfos();
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var backbendFolders = backbendFoldersSecret.DefaultValue;
-            backbendFolders.Resolve(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
+            await backbendFolders.ResolveAsync(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, backbendFolders.Count);
         }
@@ -50,7 +50,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             for(var i = 0; i < backbendFolders.Count; i ++) {
                 Assert.AreEqual(backbendFolders[i].Name, clone[i].Name);
             }
-            backbendFolders.Resolve(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
+            await backbendFolders.ResolveAsync(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         }
     }

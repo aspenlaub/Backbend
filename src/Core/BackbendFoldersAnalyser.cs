@@ -22,7 +22,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             var result = new List<BackbendFolderToBeArchived>();
             var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
-            backbendFolders.Resolve(FolderResolver, errorsAndInfos);
+            await backbendFolders.ResolveAsync(FolderResolver, errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }
             var archiveFolderFinderSecret = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) { return result; }

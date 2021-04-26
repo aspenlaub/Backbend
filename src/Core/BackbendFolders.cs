@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 
@@ -11,9 +12,9 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
             return clone;
         }
 
-        public void Resolve(IFolderResolver folderResolver, IErrorsAndInfos errorsAndInfos) {
+        public async Task ResolveAsync(IFolderResolver folderResolver, IErrorsAndInfos errorsAndInfos) {
             foreach (var backbendFolder in this) {
-                backbendFolder.SetFolder(folderResolver.Resolve(backbendFolder.Name, errorsAndInfos));
+                backbendFolder.SetFolder(await folderResolver.ResolveAsync(backbendFolder.Name, errorsAndInfos));
             }
         }
     }
