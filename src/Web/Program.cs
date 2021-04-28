@@ -1,20 +1,21 @@
-﻿using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
-using Aspenlaub.Net.GitHub.CSharp.DvinStandard.Extensions;
+﻿using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
+using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
     public class Program {
-        public static void Main(string[] args) {
-            CreateWebHostBuilder(args).Build().Run();
+        public static async Task Main(string[] args) {
+            await (await CreateWebHostBuilderAsync(args)).Build().RunAsync();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static async Task<IWebHostBuilder> CreateWebHostBuilderAsync(string[] args) =>
+            (await WebHost.CreateDefaultBuilder(args)
 #if DEBUG
-                .UseDvinAndPegh(Constants.BackbendAppId, false, args)
+                .UseDvinAndPeghAsync(Constants.BackbendAppId, false, args))
 #else
-                .UseDvinAndPegh(Constants.BackbendAppId, true, args)
+                .UseDvinAndPeghAsync(Constants.BackbendAppId, true, args))
 #endif
                 .UseStartup<Startup>();
     }
