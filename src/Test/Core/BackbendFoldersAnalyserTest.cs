@@ -34,7 +34,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             }
 
             var textFileName = folder + "Test.txt";
-            File.WriteAllText(textFileName, textFileName);
+            await File.WriteAllTextAsync(textFileName, textFileName);
 
             var archiveFileName = archiveFolder + "Test.zip";
             File.Delete(archiveFileName);
@@ -66,7 +66,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, resultList.Count);
 
-            File.WriteAllText(archiveFileName, textFileName);
+            await File.WriteAllTextAsync(archiveFileName, textFileName);
 
             result = await sut.AnalyzeAsync(errorsAndInfos);
             resultList = result.ToList();
@@ -74,8 +74,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             Assert.AreEqual(0, resultList.Count);
 
             var otherTextFileName = otherFolder + "Test.txt";
-            File.WriteAllText(otherTextFileName, otherTextFileName);
-            File.SetLastWriteTime(otherTextFileName, DateTime.Now.AddDays(29));
+            await File.WriteAllTextAsync(otherTextFileName, otherTextFileName);
+            File.SetLastWriteTime(otherTextFileName, DateTime.Now.AddDays(BackbendFoldersAnalyser.ArchiveWithinHowManyDays + 1));
 
             result = await sut.AnalyzeAsync(errorsAndInfos);
             resultList = result.ToList();

@@ -9,7 +9,7 @@ using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
     public class BackbendFoldersAnalyser {
-        private const int ArchiveWithinHowManyDays = 28;
+        public const int ArchiveWithinHowManyDays = 72;
         protected readonly ISecretRepository SecretRepository;
         protected readonly IFolderResolver FolderResolver;
 
