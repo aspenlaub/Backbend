@@ -22,28 +22,26 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     public partial class BackbendWindow {
-        private bool vNavigated;
-
-        private Process vProcess;
-
-        private readonly IContainer vContainer;
+        private bool Navigated;
+        private Process Process;
+        private readonly IContainer Container;
 
         public BackbendWindow() {
             InitializeComponent();
             var builder = new ContainerBuilder().UseDvinAndPegh(new DummyCsArgumentPrompter());
-            vContainer = builder.Build();
+            Container = builder.Build();
         }
 
         private void HtmlOutput_OnNavigated(object sender, NavigationEventArgs e) {
             Cursor = Cursors.Arrow;
-            vNavigated = true;
+            Navigated = true;
         }
 
         private async void BackbendWindow_OnLoaded(object sender, RoutedEventArgs e) {
             await NavigateToMessage($"Starting {Constants.BackbendAppId}&hellip;");
 
             var errorsAndInfos = new ErrorsAndInfos();
-            var dvinApp = await vContainer.Resolve<IDvinRepository>().LoadAsync(Constants.BackbendAppId, errorsAndInfos);
+            var dvinApp = await Container.Resolve<IDvinRepository>().LoadAsync(Constants.BackbendAppId, errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) {
                 await NavigateToMessage(errorsAndInfos.ErrorsToString());
                 return;
@@ -61,7 +59,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
             Cursor = Cursors.Wait;
             Width = 660;
             Height = 660;
-            vNavigated = false;
+            Navigated = false;
             HtmlOutput.Navigate("http://localhost:" + dvinApp.Port);
         }
 
@@ -81,7 +79,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
                 return false;
             }
 
-            vProcess = dvinApp.Start(fileSystemService, errorsAndInfos);
+            Process = dvinApp.Start(fileSystemService, errorsAndInfos);
             Wait.Until(() => dvinApp.IsPortListenedTo(), TimeSpan.FromSeconds(30));
             if (errorsAndInfos.AnyErrors()) {
                 await NavigateToMessage(string.Join("<br>", errorsAndInfos.Errors));
@@ -98,17 +96,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
 
         private void BackbendWindow_OnClosing(object sender, CancelEventArgs e) {
             try {
-                vProcess?.Kill();
+                Process?.Kill();
                 // ReSharper disable once EmptyGeneralCatchClause
             } catch {
             }
         }
 
         private async Task NavigateToMessage(string message) {
-            vNavigated = false;
+            Navigated = false;
             var markup = "<html><head></head><body><p>" + message + "</p></body></html>";
             HtmlOutput.NavigateToString(markup);
-            await Task.Run(() => Wait.Until(() => vNavigated, TimeSpan.FromSeconds(5)));
+            await Task.Run(() => Wait.Until(() => Navigated, TimeSpan.FromSeconds(5)));
         }
     }
 }

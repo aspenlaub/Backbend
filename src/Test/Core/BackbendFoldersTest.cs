@@ -11,11 +11,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class BackbendFoldersTest {
-        private readonly IContainer vContainer;
+        private readonly IContainer Container;
 
         public BackbendFoldersTest() {
             var builder = new ContainerBuilder().UsePegh(new DummyCsArgumentPrompter());
-            vContainer = builder.Build();
+            Container = builder.Build();
         }
 
         [TestInitialize]
@@ -31,14 +31,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             var errorsAndInfos = new ErrorsAndInfos();
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var backbendFolders = backbendFoldersSecret.DefaultValue;
-            await backbendFolders.ResolveAsync(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
+            await backbendFolders.ResolveAsync(Container.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
             Assert.AreEqual(1, backbendFolders.Count);
         }
 
         [TestMethod]
         public async Task CanGetBackbendFolders() {
-            var secretRepository = vContainer.Resolve<ISecretRepository>();
+            var secretRepository = Container.Resolve<ISecretRepository>();
             var backbendFoldersSecret = new BackbendFoldersSecret();
             var errorsAndInfos = new ErrorsAndInfos();
             var backbendFolders = await secretRepository.GetAsync(backbendFoldersSecret, errorsAndInfos);
@@ -50,7 +50,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             for(var i = 0; i < backbendFolders.Count; i ++) {
                 Assert.AreEqual(backbendFolders[i].Name, clone[i].Name);
             }
-            await backbendFolders.ResolveAsync(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
+            await backbendFolders.ResolveAsync(Container.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         }
     }

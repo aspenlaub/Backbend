@@ -6,8 +6,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-        private IFolder vFolder;
-        public void SetFolder(IFolder folder) { vFolder = folder; }
-        public IFolder GetFolder() { return vFolder; }
+        private IFolder Folder;
+        public void SetFolder(IFolder folder) { Folder = folder; }
+        public IFolder GetFolder() { return Folder; }
     }
 }

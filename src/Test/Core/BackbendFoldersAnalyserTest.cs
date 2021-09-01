@@ -14,11 +14,11 @@ using Moq;
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class BackbendFoldersAnalyserTest {
-        private readonly IContainer vContainer;
+        private readonly IContainer Container;
 
         public BackbendFoldersAnalyserTest() {
             var builder = new ContainerBuilder().UsePegh(new DummyCsArgumentPrompter());
-            vContainer = builder.Build();
+            Container = builder.Build();
         }
 
         [TestMethod]
@@ -40,12 +40,12 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             File.Delete(archiveFileName);
 
             var backbendFolders = new BackbendFolders {
-                new BackbendFolder { Name = folder },
-                new BackbendFolder { Name = archiveFolder }
+                new() { Name = folder },
+                new() { Name = archiveFolder }
             };
 
             var errorsAndInfos = new ErrorsAndInfos();
-            await backbendFolders.ResolveAsync(vContainer.Resolve<IFolderResolver>(), errorsAndInfos);
+            await backbendFolders.ResolveAsync(Container.Resolve<IFolderResolver>(), errorsAndInfos);
             Assert.IsFalse(errorsAndInfos.AnyErrors(), errorsAndInfos.ErrorsToString());
 
             var secretRepositoryMock = new Mock<ISecretRepository>();
@@ -59,7 +59,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
             var secret = new ArchiveFolderFinderSecret();
             secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ArchiveFolderFinderSecret>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(secret.DefaultValue));
 
-            var sut = new BackbendFoldersAnalyser(vContainer.Resolve<IFolderResolver>(), secretRepositoryMock.Object);
+            var sut = new BackbendFoldersAnalyser(Container.Resolve<IFolderResolver>(), secretRepositoryMock.Object);
             errorsAndInfos = new ErrorsAndInfos();
             var result = await sut.AnalyzeAsync(errorsAndInfos);
             var resultList = result.ToList();

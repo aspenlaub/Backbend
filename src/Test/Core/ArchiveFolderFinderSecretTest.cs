@@ -9,11 +9,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
     [TestClass]
     public class ArchiveFolderFinderSecretTest {
-        private readonly IContainer vContainer;
+        private readonly IContainer Container;
 
         public ArchiveFolderFinderSecretTest() {
             var builder = new ContainerBuilder().UsePegh(new DummyCsArgumentPrompter());
-            vContainer = builder.Build();
+            Container = builder.Build();
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core {
 
         [TestMethod]
         public async Task CanGetArchiveFolder() {
-            var secretRepository = vContainer.Resolve<ISecretRepository>();
+            var secretRepository = Container.Resolve<ISecretRepository>();
             var secret = new ArchiveFolderFinderSecret();
             var folder = BackbendFoldersSecret.DefaultFolder;
             if (!Directory.Exists(folder)) {

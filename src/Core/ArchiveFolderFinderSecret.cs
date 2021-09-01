@@ -4,7 +4,7 @@ using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
     public class ArchiveFolderFinderSecret : ISecret<CsLambda> {
         private static CsLambda vDefaultCsLambda;
-        public CsLambda DefaultValue => vDefaultCsLambda ?? (vDefaultCsLambda = CreateDefaultCsLambda());
+        public CsLambda DefaultValue => vDefaultCsLambda ??= CreateDefaultCsLambda();
 
         private static CsLambda CreateDefaultCsLambda() {
             var csLambda = new CsLambda {

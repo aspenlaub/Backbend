@@ -1,20 +1,17 @@
 ﻿using System.IO;
-using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Web.Attributes;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Extensions;
-using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OData.Edm;
-
 // ReSharper disable UnusedMember.Global
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
@@ -27,14 +24,21 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddOData();
+            var model = BackbendModelBuilder.GetEdmModel();
+            services.AddControllers()
+                .AddOData(opt => opt.Count().Filter().Expand().Select().OrderBy().SetMaxTop(null)
+                    .AddRouteComponents("odata", model)
+                    .Conventions.Add(new BackbendConvention())
+                );
 
-            services.AddControllersWithViews(mvc => mvc.EnableEndpointRouting = false);
+            services.AddRazorPages(); // for MapRazorPages()
 
             services.UseDvinAndPegh(new DummyCsArgumentPrompter());
 
-            DvinExceptionFilterAttribute.SetExceptionLogFolder(new Folder(Path.GetTempPath()).SubFolder("AspenlaubExceptions"));
-            services.AddMvc(config => config.Filters.Add(new DvinExceptionFilterAttribute()));
+            services.AddControllers(opt => {
+                DvinExceptionFilterAttribute.SetExceptionLogFolder(new Folder(Path.GetTempPath()).SubFolder("AspenlaubExceptions"));
+                opt.Filters.Add<DvinExceptionFilterAttribute>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,21 +49,28 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Web {
 
             app.UseStaticFiles();
 
-            app.UseMvc(routebuilder => {
-                routebuilder.Select().Expand().Filter().OrderBy(QueryOptionSetting.Allowed).MaxTop(null).Count();
-                routebuilder.MapODataServiceRoute("ODataRoute", "odata", GetEdmModel());
-                routebuilder.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+            app.UseRouting(); // for UseEndpoints()
+
+            app.UseODataRouteDebug("odata"); // for display of end points at http://localhost:65169/odata
+            app.UseODataQueryRequest();
+
+            app.Use(next => context => {
+                var endpoint = context.GetEndpoint();
+                // ReSharper disable once ConvertIfStatementToReturnStatement
+                if (endpoint == null) {
+                    return next(context);
+                }
+
+                return next(context);
             });
+
+            app.UseEndpoints(ConfigureEndpoints);
         }
 
-        private static IEdmModel GetEdmModel() {
-            var builder = new ODataConventionModelBuilder {
-                Namespace = "Aspenlaub.Net.GitHub.CSharp.Backbend",
-                ContainerName = "DefaultContainer"
-            };
-            builder.EntitySet<BackbendFolderToBeArchived>("BackbendFoldersToBeArchived");
-
-            return builder.GetEdmModel();
+        private static void ConfigureEndpoints(IEndpointRouteBuilder endpoints) {
+            endpoints.MapControllers();
+            endpoints.MapDefaultControllerRoute(); // for http://localhost:65169/
+            endpoints.MapRazorPages(); // for e.g. return View("Index");
         }
     }
 }
