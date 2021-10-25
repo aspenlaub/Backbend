@@ -1,20 +1,10 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Navigation;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
-using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
-using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
-using Aspenlaub.Net.GitHub.CSharp.Dvin.Interfaces;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
 using Autofac;
-using IContainer = Autofac.IContainer;
-using TimeSpan = System.TimeSpan;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
     /// <summary>
@@ -22,91 +12,37 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend {
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     public partial class BackbendWindow {
-        private bool Navigated;
-        private Process Process;
-        private readonly IContainer Container;
+        private IBackbendFoldersAnalyser BackbendFoldersAnalyser { get; }
 
         public BackbendWindow() {
             InitializeComponent();
-            var builder = new ContainerBuilder().UseDvinAndPegh(new DummyCsArgumentPrompter());
-            Container = builder.Build();
+            var builder = new ContainerBuilder().UseBackbend();
+            var container = builder.Build();
+            BackbendFoldersAnalyser = container.Resolve<IBackbendFoldersAnalyser>();
         }
 
-        private void HtmlOutput_OnNavigated(object sender, NavigationEventArgs e) {
-            Cursor = Cursors.Arrow;
-            Navigated = true;
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e) {
+            Environment.Exit(0);
         }
 
-        private async void BackbendWindow_OnLoaded(object sender, RoutedEventArgs e) {
-            await NavigateToMessage($"Starting {Constants.BackbendAppId}&hellip;");
+        private async void RefreshButton_OnClick(object sender, RoutedEventArgs e) {
+            await RefreshAsync();
+        }
 
+        private async Task RefreshAsync() {
             var errorsAndInfos = new ErrorsAndInfos();
-            var dvinApp = await Container.Resolve<IDvinRepository>().LoadAsync(Constants.BackbendAppId, errorsAndInfos);
-            if (errorsAndInfos.AnyErrors()) {
-                await NavigateToMessage(errorsAndInfos.ErrorsToString());
-                return;
-            }
-            if (dvinApp == null) {
-                await NavigateToMessage($"{Constants.BackbendAppId} app not found");
-                return;
-            }
+            var results = (await BackbendFoldersAnalyser.AnalyseAsync(errorsAndInfos)).Select(f => f.Folder.Name).ToList();
+            results.InsertRange(0, errorsAndInfos.Errors);
 
-            Wait.Until(() => dvinApp.IsPortListenedTo(), TimeSpan.FromSeconds(5));
-            if (!dvinApp.IsPortListenedTo() && !await StartAppAndReturnSuccess(dvinApp)) {
-                return;
-            }
-
-            Cursor = Cursors.Wait;
-            Width = 660;
-            Height = 660;
-            Navigated = false;
-            HtmlOutput.Navigate("http://localhost:" + dvinApp.Port);
+            AnalysisResults.Text = string.Join("\r\n", results);
         }
 
-        private async Task<bool> StartAppAndReturnSuccess(IDvinApp dvinApp) {
-            var fileSystemService = new FileSystemService();
-            var errorsAndInfos = new ErrorsAndInfos();
-            if (!dvinApp.HasAppBeenPublishedAfterLatestSourceChanges(fileSystemService)) {
-                dvinApp.Publish(fileSystemService, true, errorsAndInfos);
-                if (errorsAndInfos.AnyErrors()) {
-                    await NavigateToMessage(string.Join("<br>", errorsAndInfos.Errors));
-                    return false;
-                }
-            }
-
-            if (!dvinApp.HasAppBeenPublishedAfterLatestSourceChanges(fileSystemService)) {
-                await NavigateToMessage($"{Constants.BackbendAppId} has not been published since the latest source code changes");
-                return false;
-            }
-
-            Process = dvinApp.Start(fileSystemService, errorsAndInfos);
-            Wait.Until(() => dvinApp.IsPortListenedTo(), TimeSpan.FromSeconds(30));
-            if (errorsAndInfos.AnyErrors()) {
-                await NavigateToMessage(string.Join("<br>", errorsAndInfos.Errors));
-                return false;
-            }
-
-            if (dvinApp.IsPortListenedTo()) {
-                return true;
-            }
-
-            await NavigateToMessage($"{Constants.BackbendAppId} started but not listening");
-            return false;
+        private async void Window_Loaded(object sender, RoutedEventArgs e) {
+            await RefreshAsync();
         }
 
-        private void BackbendWindow_OnClosing(object sender, CancelEventArgs e) {
-            try {
-                Process?.Kill();
-                // ReSharper disable once EmptyGeneralCatchClause
-            } catch {
-            }
-        }
-
-        private async Task NavigateToMessage(string message) {
-            Navigated = false;
-            var markup = "<html><head></head><body><p>" + message + "</p></body></html>";
-            HtmlOutput.NavigateToString(markup);
-            await Task.Run(() => Wait.Until(() => Navigated, TimeSpan.FromSeconds(5)));
+        private void Window_Closed(object sender, EventArgs e) {
+            Environment.Exit(0);
         }
     }
 }
