@@ -74,15 +74,22 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core {
         }
 
         private static DateTime LatestModificationTime(string folder, string wildcard, SearchOption searchOption) {
-            var files = Directory.GetFiles(folder, wildcard, searchOption)
-                .Where(f => !f.Contains(@"\tools\"))
-                .Where(f => !f.Contains(@"\bin\"))
-                .Where(f => !f.Contains(@"\obj\"))
-                .Where(f => !f.Contains(@"\.git\"))
-                .Where(f => !f.Contains(@"\.vs\"))
-                .Where(f => !f.Contains(@"\TestResults\"))
-                .ToList();
-            var lastWriteTimeStamps = files.Select(f => File.GetLastWriteTime(f)).ToList();
+            var lastWriteTimeStamps = new List<DateTime>();
+            if (searchOption == SearchOption.AllDirectories) {
+                var folders = Directory.GetDirectories(folder)
+                    .Where(f => !f.EndsWith(@"\tools"))
+                    .Where(f => !f.EndsWith(@"\bin"))
+                    .Where(f => !f.EndsWith(@"\obj"))
+                    .Where(f => !f.EndsWith(@"\.git"))
+                    .Where(f => !f.EndsWith(@"\.vs"))
+                    .Where(f => !f.EndsWith(@"\.idea"))
+                    .Where(f => !f.EndsWith(@"\TestResults"))
+                    .ToList();
+                lastWriteTimeStamps.AddRange(folders.Select(f => LatestModificationTime(f, wildcard, SearchOption.AllDirectories)));
+            }
+
+            var files = Directory.GetFiles(folder, wildcard, SearchOption.TopDirectoryOnly);
+            lastWriteTimeStamps.AddRange(files.Select(f => File.GetLastWriteTime(f)).ToList());
             return lastWriteTimeStamps.Any() ? lastWriteTimeStamps.Max() : DateTime.MinValue;
         }
     }
