@@ -16,7 +16,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Foreground="Black" Margin="10,5,0,0">Projects archived more than one month after last change:</Label>
-        <TextBox Grid.Column="0" Grid.Row="1" Name="AnalysisResults" Grid.ColumnSpan="3" Margin="10" Padding="5" Background="Goldenrod" Foreground="LemonChiffon">Not implemented yet.</TextBox>
+        <TextBox Grid.Column="0" Grid.Row="1" Name="AnalysisResults" Grid.ColumnSpan="3" Margin="10" Padding="5" Background="Goldenrod" Foreground="LemonChiffon">Refreshing...</TextBox>
         <Button Grid.Column="1" Grid.Row="0" Name="RefreshButton" Margin="0,10,10,0" Padding="10,0,10,0" Background="Goldenrod" Foreground="LemonChiffon" Click="RefreshButton_OnClick">_Refresh</Button>
         <Button Grid.Column="2" Grid.Row="0" Name="CloseButton" Margin="0,10,10,0" Padding="10,0,10,0" Background="Goldenrod" Foreground="LemonChiffon" Click="CloseButton_OnClick">_Close</Button>
     </Grid>
