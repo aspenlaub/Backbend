@@ -15,7 +15,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.1169.598" />
+    <PackageReference Include="Dvin" Version="2.0.1204.857" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="Moq" Version="4.18.1" />
