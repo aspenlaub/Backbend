@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>Aspenlaub.Net.GitHub.CSharp.Backbend</AssemblyName>
     <RootNamespace>Aspenlaub.Net.GitHub.CSharp.Backbend</RootNamespace>
@@ -65,6 +65,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.1204.857" />
+    <PackageReference Include="Dvin" Version="2.0.1206.478" />
   </ItemGroup>
 </Project>
