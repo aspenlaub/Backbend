@@ -32,7 +32,7 @@ public partial class BackbendWindow {
 
     private async Task RefreshAsync() {
         var errorsAndInfos = new ErrorsAndInfos();
-        var results = (await BackbendFoldersAnalyser.AnalyseAsync(errorsAndInfos)).Select(f => f.Folder.Name).ToList();
+        var results = (await BackbendFoldersAnalyser.AnalyzeAsync(errorsAndInfos)).Select(f => f.Folder.Name).ToList();
         results.InsertRange(0, errorsAndInfos.Errors);
 
         AnalysisResults.Text = string.Join("\r\n", results);

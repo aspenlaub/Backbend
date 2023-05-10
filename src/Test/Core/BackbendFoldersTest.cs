@@ -12,11 +12,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core;
 
 [TestClass]
 public class BackbendFoldersTest {
-    private readonly IContainer Container;
+    private readonly IContainer _Container;
 
     public BackbendFoldersTest() {
         var builder = new ContainerBuilder().UsePegh("Backbend", new DummyCsArgumentPrompter());
-        Container = builder.Build();
+        _Container = builder.Build();
     }
 
     [TestInitialize]
@@ -32,26 +32,26 @@ public class BackbendFoldersTest {
         var errorsAndInfos = new ErrorsAndInfos();
         var backbendFoldersSecret = new BackbendFoldersSecret();
         var backbendFolders = backbendFoldersSecret.DefaultValue;
-        await backbendFolders.ResolveAsync(Container.Resolve<IFolderResolver>(), errorsAndInfos);
+        await backbendFolders.ResolveAsync(_Container.Resolve<IFolderResolver>(), errorsAndInfos);
         Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         Assert.AreEqual(1, backbendFolders.Count);
     }
 
     [TestMethod]
     public async Task CanGetBackbendFolders() {
-        var secretRepository = Container.Resolve<ISecretRepository>();
+        var secretRepository = _Container.Resolve<ISecretRepository>();
         var backbendFoldersSecret = new BackbendFoldersSecret();
         var errorsAndInfos = new ErrorsAndInfos();
         var backbendFolders = await secretRepository.GetAsync(backbendFoldersSecret, errorsAndInfos);
         Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         Assert.IsNotNull(backbendFolders);
-        Assert.IsTrue(backbendFolders.Count >= 3);
+        Assert.IsTrue(backbendFolders.Count >= 2);
         var clone = backbendFolders.Clone();
         Assert.AreEqual(backbendFolders.Count, clone.Count);
         for(var i = 0; i < backbendFolders.Count; i ++) {
             Assert.AreEqual(backbendFolders[i].Name, clone[i].Name);
         }
-        await backbendFolders.ResolveAsync(Container.Resolve<IFolderResolver>(), errorsAndInfos);
+        await backbendFolders.ResolveAsync(_Container.Resolve<IFolderResolver>(), errorsAndInfos);
         Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
     }
 }

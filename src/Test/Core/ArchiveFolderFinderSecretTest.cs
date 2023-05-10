@@ -10,11 +10,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Test.Core;
 
 [TestClass]
 public class ArchiveFolderFinderSecretTest {
-    private readonly IContainer Container;
+    private readonly IContainer _Container;
 
     public ArchiveFolderFinderSecretTest() {
         var builder = new ContainerBuilder().UsePegh("Backbend", new DummyCsArgumentPrompter());
-        Container = builder.Build();
+        _Container = builder.Build();
     }
 
     [TestMethod]
@@ -26,7 +26,7 @@ public class ArchiveFolderFinderSecretTest {
 
     [TestMethod]
     public async Task CanGetArchiveFolder() {
-        var secretRepository = Container.Resolve<ISecretRepository>();
+        var secretRepository = _Container.Resolve<ISecretRepository>();
         var secret = new ArchiveFolderFinderSecret();
         var folder = BackbendFoldersSecret.DefaultFolder;
         if (!Directory.Exists(folder)) {

@@ -7,7 +7,7 @@ public class BackbendFolder {
     [XmlAttribute("name")]
     public string Name { get; set; }
 
-    private IFolder Folder;
-    public void SetFolder(IFolder folder) { Folder = folder; }
-    public IFolder GetFolder() { return Folder; }
+    private IFolder _Folder;
+    public void SetFolder(IFolder folder) { _Folder = folder; }
+    public IFolder GetFolder() { return _Folder; }
 }
