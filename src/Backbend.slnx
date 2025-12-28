@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Backbend.csproj" />
+  <Project Path="Core/Backbend.Core.csproj" />
+  <Project Path="Test/Backbend.Test.csproj" />
+</Solution>
