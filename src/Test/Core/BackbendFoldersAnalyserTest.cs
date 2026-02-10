@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,26 +19,26 @@ public class BackbendFoldersAnalyserTest {
     private readonly IContainer _Container;
 
     public BackbendFoldersAnalyserTest() {
-        var builder = new ContainerBuilder().UsePegh("Backbend", new DummyCsArgumentPrompter());
+        ContainerBuilder builder = new ContainerBuilder().UsePegh("Backbend");
         _Container = builder.Build();
     }
 
     [TestMethod]
     public async Task CanAnalyzeBackbendFolders() {
-        var folder = BackbendFoldersSecret.DefaultFolder;
-        var archiveFolder = folder.Replace(@"\Test\", @"\TestArchive\");
+        string folder = BackbendFoldersSecret.DefaultFolder;
+        string archiveFolder = folder.Replace(@"\Test\", @"\TestArchive\");
         if (!Directory.Exists(archiveFolder)) {
             Directory.CreateDirectory(archiveFolder);
         }
-        var otherFolder = folder + @"Sub\";
+        string otherFolder = folder + @"Sub\";
         if (!Directory.Exists(otherFolder)) {
             Directory.CreateDirectory(otherFolder);
         }
 
-        var textFileName = folder + "Test.txt";
+        string textFileName = folder + "Test.txt";
         await File.WriteAllTextAsync(textFileName, textFileName);
 
-        var archiveFileName = archiveFolder + "Test.zip";
+        string archiveFileName = archiveFolder + "Test.zip";
         File.Delete(archiveFileName);
 
         var backbendFolders = new BackbendFolders {
@@ -62,7 +63,7 @@ public class BackbendFoldersAnalyserTest {
 
         var sut = new BackbendFoldersAnalyser(_Container.Resolve<IFolderResolver>(), secretRepositoryMock.Object);
         errorsAndInfos = new ErrorsAndInfos();
-        var result = await sut.AnalyzeAsync(errorsAndInfos);
+        IEnumerable<BackbendFolderToBeArchived> result = await sut.AnalyzeAsync(errorsAndInfos);
         var resultList = result.ToList();
         Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         Assert.AreEqual(1, resultList.Count);
@@ -74,7 +75,7 @@ public class BackbendFoldersAnalyserTest {
         Assert.IsFalse(errorsAndInfos.Errors.Any(), string.Join("\r\n", errorsAndInfos.Errors));
         Assert.AreEqual(0, resultList.Count);
 
-        var otherTextFileName = otherFolder + "Test.txt";
+        string otherTextFileName = otherFolder + "Test.txt";
         await File.WriteAllTextAsync(otherTextFileName, otherTextFileName);
         File.SetLastWriteTime(otherTextFileName, DateTime.Now.AddDays(BackbendFoldersAnalyser.ArchiveWithinHowManyDays + 1));
 
