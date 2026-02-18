@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
+using Aspenlaub.Net.GitHub.CSharp.Seoa.Extensions;
+using Aspenlaub.Net.GitHub.CSharp.Skladasu.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Skladasu.Interfaces;
 using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -48,7 +50,7 @@ public class BackbendFoldersAnalyserTest {
 
         var errorsAndInfos = new ErrorsAndInfos();
         await backbendFolders.ResolveAsync(_Container.Resolve<IFolderResolver>(), errorsAndInfos);
-        Assert.IsFalse(errorsAndInfos.AnyErrors(), errorsAndInfos.ErrorsToString());
+        Assert.That.ThereWereNoErrors(errorsAndInfos);
 
         var secretRepositoryMock = new Mock<ISecretRepository>();
         secretRepositoryMock.Setup(s => s.GetAsync(It.IsAny<ISecret<BackbendFolders>>(), It.IsAny<IErrorsAndInfos>())).Returns(Task.FromResult(backbendFolders));

@@ -6,37 +6,33 @@ using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
+using Aspenlaub.Net.GitHub.CSharp.Skladasu.Interfaces;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
 
-public class BackbendFoldersAnalyser : IBackbendFoldersAnalyser {
+public class BackbendFoldersAnalyser(IFolderResolver folderResolver, ISecretRepository secretRepository) : IBackbendFoldersAnalyser {
     public const int ArchiveWithinHowManyDays = 72;
-    protected readonly ISecretRepository SecretRepository;
-    protected readonly IFolderResolver FolderResolver;
-
-    public BackbendFoldersAnalyser(IFolderResolver folderResolver, ISecretRepository secretRepository) {
-        FolderResolver = folderResolver;
-        SecretRepository = secretRepository;
-    }
+    protected readonly ISecretRepository SecretRepository = secretRepository;
+    protected readonly IFolderResolver FolderResolver = folderResolver;
 
     public async Task<IEnumerable<BackbendFolderToBeArchived>> AnalyzeAsync(IErrorsAndInfos errorsAndInfos) {
         var result = new List<BackbendFolderToBeArchived>();
-        var backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
+        BackbendFolders backbendFolders = await SecretRepository.GetAsync(new BackbendFoldersSecret(), errorsAndInfos);
         if (errorsAndInfos.AnyErrors()) { return result; }
         await backbendFolders.ResolveAsync(FolderResolver, errorsAndInfos);
         if (errorsAndInfos.AnyErrors()) { return result; }
-        var archiveFolderFinderSecret = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
+        CsLambda archiveFolderFinderSecret = await SecretRepository.GetAsync(new ArchiveFolderFinderSecret(), errorsAndInfos);
         if (errorsAndInfos.AnyErrors()) { return result; }
 
-        var archiveFolderFinder = await SecretRepository.CompileCsLambdaAsync<string, string>(archiveFolderFinderSecret);
+        Func<string, string> archiveFolderFinder = await SecretRepository.CompileCsLambdaAsync<string, string>(archiveFolderFinderSecret);
         if (archiveFolderFinder == null) {
             errorsAndInfos.Errors.Add(Properties.Resources.CouldNotCompileFolderFinder);
             return result;
         }
 
-        foreach (var backbendFolder in backbendFolders) {
+        foreach (BackbendFolder backbendFolder in backbendFolders) {
             AnalyzeFolderAsync(backbendFolder, archiveFolderFinder, result);
-            foreach (var subFolder in Directory.GetDirectories(backbendFolder.GetFolder().FullName).Select(f => new BackbendFolder { Name = f })) {
+            foreach (BackbendFolder subFolder in Directory.GetDirectories(backbendFolder.GetFolder().FullName).Select(f => new BackbendFolder { Name = f })) {
                 subFolder.SetFolder(new Folder(subFolder.Name));
                 AnalyzeFolderAsync(subFolder, archiveFolderFinder, result);
             }
@@ -48,8 +44,8 @@ public class BackbendFoldersAnalyser : IBackbendFoldersAnalyser {
     private void AnalyzeFolderAsync(BackbendFolder folder, Func<string, string> archiveFolderFinder, ICollection<BackbendFolderToBeArchived> result) {
         if (!folder.GetFolder().Exists()) { return; }
 
-        var backbendFolderFullName = folder.GetFolder().FullName;
-        var archiveFolder = archiveFolderFinder(backbendFolderFullName);
+        string backbendFolderFullName = folder.GetFolder().FullName;
+        string archiveFolder = archiveFolderFinder(backbendFolderFullName);
         if (archiveFolder == "" || archiveFolder == backbendFolderFullName) { return; }
 
         if (archiveFolder == null) {
@@ -61,14 +57,14 @@ public class BackbendFoldersAnalyser : IBackbendFoldersAnalyser {
             return;
         }
 
-        var latestModificationTime = LatestModificationTime(backbendFolderFullName, "*.*", SearchOption.AllDirectories);
+        DateTime latestModificationTime = LatestModificationTime(backbendFolderFullName, "*.*", SearchOption.AllDirectories);
         if (latestModificationTime < new DateTime(2000, 1, 1)) {
             result.Add(new BackbendFolderToBeArchived { Folder = folder, Reason = Properties.Resources.FoldersInNeedOfArchivingNoFiles });
             return;
         }
 
-        var minimumArchivingTime = latestModificationTime.AddDays(-ArchiveWithinHowManyDays);
-        var newestArchivingTime = LatestModificationTime(archiveFolder, "*.*zip", SearchOption.TopDirectoryOnly);
+        DateTime minimumArchivingTime = latestModificationTime.AddDays(-ArchiveWithinHowManyDays);
+        DateTime newestArchivingTime = LatestModificationTime(archiveFolder, "*.*zip", SearchOption.TopDirectoryOnly);
         if (newestArchivingTime > minimumArchivingTime) { return; }
 
         result.Add(new BackbendFolderToBeArchived { Folder = folder, Reason = Properties.Resources.FoldersInNeedOfArchiving });
@@ -89,8 +85,8 @@ public class BackbendFoldersAnalyser : IBackbendFoldersAnalyser {
             lastWriteTimeStamps.AddRange(folders.Select(f => LatestModificationTime(f, wildcard, SearchOption.AllDirectories)));
         }
 
-        var files = Directory.GetFiles(folder, wildcard, SearchOption.TopDirectoryOnly);
-        lastWriteTimeStamps.AddRange(files.Select(f => File.GetLastWriteTime(f)).ToList());
+        string[] files = Directory.GetFiles(folder, wildcard, SearchOption.TopDirectoryOnly);
+        lastWriteTimeStamps.AddRange(files.Select(File.GetLastWriteTime).ToList());
         return lastWriteTimeStamps.Any() ? lastWriteTimeStamps.Max() : DateTime.MinValue;
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Aspenlaub.Net.GitHub.CSharp.Backbend.Core;
-using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Skladasu.Entities;
 using Autofac;
 
 namespace Aspenlaub.Net.GitHub.CSharp.Backbend;
@@ -17,8 +17,8 @@ public partial class BackbendWindow {
 
     public BackbendWindow() {
         InitializeComponent();
-        var builder = new ContainerBuilder().UseBackbend();
-        var container = builder.Build();
+        ContainerBuilder builder = new ContainerBuilder().UseBackbend();
+        IContainer container = builder.Build();
         BackbendFoldersAnalyser = container.Resolve<IBackbendFoldersAnalyser>();
     }
 
