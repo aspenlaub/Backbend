@@ -23,6 +23,7 @@
     <RepositoryUrl>https://github.com/aspenlaub/Backbend.git</RepositoryUrl>
     <RepositoryBranch>master</RepositoryBranch>
     <PackageId>Backbend</PackageId>
+    <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
