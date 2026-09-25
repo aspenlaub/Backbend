@@ -16,10 +16,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.2607.996" />
+    <PackageReference Include="Dvin" Version="2.0.2620.851" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.12" />
     <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="Seoa" Version="2.0.2607.982" />
+    <PackageReference Include="Seoa" Version="2.0.2620.841" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Backbend.Core.csproj" />
